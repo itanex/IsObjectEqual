@@ -1,0 +1,146 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	
+	IsObject Demo
+
+</title><link href="Site.css" rel="stylesheet" type="text/css" />
+    <script src="jquery-1.4.1.min.js" type="text/javascript"></script>
+    
+    
+    <script src="../object.prototype.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        /* -------------------------------------------------------------------------------- */
+        /* Object Literals */
+        var EmtpyObject = {};
+
+        var LiteralObjectWithAField1 = { Field1: "1" };
+        var LiteralObjectWithAField2 = { Field1: "1" };
+        var LiteralObjectWithAField3 = { Field2: "2" };
+
+        var LiteralObjectWithFields1 = { Field1: "1", Field2: "1" };
+        var LiteralObjectWithFields2 = { Field1: "1", Field2: "2" };
+
+        /* -------------------------------------------------------------------------------- */
+        /* standard data types */
+        var StringObject = "";
+        var BooleanObject = false;
+        var NullObject = null;
+
+        /* -------------------------------------------------------------------------------- */
+        /* Objects with hidden fields */
+        var ObjectItem1 = new function () {
+            var TheHiddenField = "Hidden";
+            this.ShownField = true;
+
+            function TestMe1() { return "TestMe1 was called"; }
+
+            var TestMe2 = function () { return 4253728597; };
+
+            this.TestMe3 = function () { return false; };
+        };
+        var ObjectItem2 = new function () {
+            var TheHiddenField = "Hidden";
+            this.ShownField = true;
+
+            function TestMe1() { return "TestMe1 was called"; }
+
+            var TestMe2 = function () { return 4253728597; };
+
+            this.TestMe3 = function () { return false; };
+        };
+        var ObjectItem3 = new function () {
+            var TheHiddenField = "";
+            this.ShownField = false;
+
+            function TestMe1() { return false; }
+
+            var TestMe2 = function () { return "TestMe1 was called"; };
+
+            this.TestMe3 = function () { return 4253728597; };
+        };
+    </script>
+</head>
+<body>
+    <div class="page">
+        <div id="header">
+            <div id="title">
+                <h1>IsObject Test Results</h1>
+            </div>
+            <div id="logindisplay">&nbsp;
+            </div>
+            <div id="menucontainer">
+                <ul id="menu">
+                    <li><a href="#">IsObject Plug-in</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+    <h3>Test objects with no value checking</h3>
+    <ul id="testobjectfalse"></ul>
+    <h3>Test objects with value checking</h3>
+
+    <ul id="testobjecttrue"></ul>
+
+    <script type="text/javascript">
+        var testFalse = $("#testobjectfalse");
+        var testReport = "<li class=\"result-{1}\">Test: {0} -> <span>{1}</span></li>";
+        var Tests = [];
+    </script>
+    <script type="text/javascript">
+        Tests.push((function () {
+            var msg = "2 Literal Null Objects";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(NullObject, NullObject));
+        })());
+        Tests.push((function () {
+            var msg = "2 Literal Empty Objects";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(EmtpyObject, EmtpyObject));
+        })());
+        Tests.push((function () {
+            var msg = "1 Literal Null Object; 1 Literal String";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(NullObject, StringObject));
+        })());
+        Tests.push((function () {
+            var msg = "1 Literal String; 1 Literal Boolean";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(StringObject, BooleanObject));
+        })());
+        Tests.push((function () {
+            var msg = "2 Literal JSON Formatted Objects (self object compare -> single field)";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(LiteralObjectWithAField1, LiteralObjectWithAField1));
+        })());
+        Tests.push((function () {
+            var msg = "2 Literal JSON Formatted Objects (same field, same value -> identical)";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(LiteralObjectWithAField1, LiteralObjectWithAField2));
+        })());
+        Tests.push((function () {
+            var msg = "2 Literal JSON Formatted Objects (different values)";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(LiteralObjectWithAField1, LiteralObjectWithAField3));
+        })());
+        Tests.push((function () {
+            var msg = "2 Literal JSON Formatted Objects (different fields, same values)";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(LiteralObjectWithAField1, LiteralObjectWithFields1));
+        })());
+        Tests.push((function () {
+            var msg = "2 Literal JSON Formatted Objects (same fields, different values)";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(LiteralObjectWithFields1, LiteralObjectWithFields2));
+        })());
+        Tests.push((function () {
+            var msg = "2 Literal JSON Formatted Objects (self object compare -> multiple field)";
+            return testReport.replace(/\{0\}/gi, msg).replace(/\{1\}/gi, ObjectCompare(LiteralObjectWithFields1, LiteralObjectWithFields1));
+        })());
+    </script>
+    <script type="text/javascript">
+        //Output the test results
+        $.each(Tests, function (index) {
+            testFalse.append(this.toString());
+        });
+    </script>
+
+            <div id="footer">
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
